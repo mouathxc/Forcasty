@@ -3,18 +3,16 @@ import pandas as pd
 from pathlib import Path
 
 
-# Tunisia location
 LATITUDE = 36.8065
 LONGITUDE = 10.1815
 
 START_DATE = "20200101"
-END_DATE = "20201231"
+END_DATE = "20251231"
 
-OUTPUT_PATH = Path("data/raw/nasa_power_tunis.csv")
+OUTPUT_PATH = Path("C:\\Users\\Mouath\\Desktop\\Forcasty\\data\\raw\\nasa_power_tunis.csv")
 
 
 def fetch_nasa_power():
-    """Download daily solar and meteorological data from NASA POWER."""
 
     url = "https://power.larc.nasa.gov/api/temporal/daily/point"
 
@@ -35,20 +33,24 @@ def fetch_nasa_power():
 
     data = response.json()
 
-    values = data["properties"]["parameter"]
+    parameters = data["properties"]["parameter"]
 
-    df = pd.DataFrame(values)
+    # Create dataframe directly from the parameter dictionaries
+    df = pd.DataFrame(parameters)
 
-    df = df.T.reset_index()
-    df = df.rename(columns={"index": "date"})
+    # Dates are the dictionary index
+    df.index.name = "date"
 
+    # Move date from index into a column
+    df = df.reset_index()
+
+    # Convert YYYYMMDD → datetime
     df["date"] = pd.to_datetime(df["date"], format="%Y%m%d")
 
     return df
 
 
 def save_data(df):
-    """Save raw dataset to CSV."""
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
@@ -60,7 +62,9 @@ def save_data(df):
 
 
 if __name__ == "__main__":
+
     df = fetch_nasa_power()
+
     save_data(df)
 
     print("\nFirst five rows:")
