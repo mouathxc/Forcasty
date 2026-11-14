@@ -1,0 +1,90 @@
+{
+  "cleaning_operations": [
+    {
+      "column": "date",
+      "invalid_records_removed": 0,
+      "operation": "parse_timestamps",
+      "time_standard": "LST"
+    },
+    {
+      "columns": [
+        "ALLSKY_SFC_SW_DWN",
+        "T2M",
+        "RH2M",
+        "WS2M"
+      ],
+      "invalid_values_replaced": 0,
+      "operation": "convert_numeric"
+    },
+    {
+      "counts": {
+        "ALLSKY_SFC_SW_DWN": 0,
+        "RH2M": 0,
+        "T2M": 0,
+        "WS2M": 0
+      },
+      "marker": -999.0,
+      "operation": "replace_fill_values"
+    },
+    {
+      "changed": false,
+      "operation": "sort_chronologically"
+    },
+    {
+      "interpolation": false,
+      "operation": "preserve_missing_values",
+      "rows_dropped": 0
+    }
+  ],
+  "duplicate_timestamp_count": 0,
+  "fill_value_counts_by_column": {
+    "ALLSKY_SFC_SW_DWN": 0,
+    "RH2M": 0,
+    "T2M": 0,
+    "WS2M": 0
+  },
+  "frequency": "daily",
+  "ghi_units": "kW-hr/m^2/day",
+  "input_row_count": 2509,
+  "invalid_numeric_counts": {
+    "ALLSKY_SFC_SW_DWN": 0,
+    "RH2M": 0,
+    "T2M": 0,
+    "WS2M": 0
+  },
+  "invalid_observation_counts": {},
+  "invalid_timestamp_count": 0,
+  "irregular_spacing_count": 0,
+  "missing_interval_count": 0,
+  "missing_values_by_column": {
+    "ALLSKY_SFC_SW_DWN": 10,
+    "RH2M": 3,
+    "T2M": 3,
+    "WS2M": 3
+  },
+  "output_file": "data/processed/forcasty_tunis_clean.csv",
+  "output_row_count": 2509,
+  "output_sha256": "e7c0deb6253aedd2b25a7b37af399a0d97d9398d057d7b04e0473551a7786619",
+  "processing_timestamp_utc": "2026-11-14T00:56:50Z",
+  "site_id": "tunis",
+  "site_name": "Tunis",
+  "software_version": "0.1.0",
+  "source_file": "data/raw/nasa_power_tunis.csv",
+  "source_sha256": "e7c0deb6253aedd2b25a7b37af399a0d97d9398d057d7b04e0473551a7786619",
+  "time_standard": "LST",
+  "timestamp_convention": "LST",
+  "timestamp_range": {
+    "first": "2020-01-01",
+    "last": "2026-11-13"
+  },
+  "unsorted_timestamps": false,
+  "validation_errors": [],
+  "validation_warnings": [
+    {
+      "code": "MISSING_VALUES",
+      "count": 19,
+      "message": "missing values retained without filling: {'ALLSKY_SFC_SW_DWN': 10, 'T2M': 3, 'RH2M': 3, 'WS2M': 3}",
+      "severity": "warning"
+    }
+  ]
+}

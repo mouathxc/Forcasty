@@ -132,6 +132,21 @@ class ProjectPaths:
             self.processed_dir / f"forcasty_{site_id}_clean.csv"
         )
 
+    def hourly_clean_dataset_path(self, site_id: str) -> Path:
+        return self.resolve(
+            self.processed_dir / f"forcasty_{site_id}_hourly_clean.csv"
+        )
+
+    def processing_report_path(self, site_id: str, frequency: str) -> Path:
+        if frequency not in {"daily", "hourly"}:
+            raise ValueError(
+                f"frequency must be 'daily' or 'hourly', got {frequency!r}."
+            )
+        return self.resolve(
+            self.metadata_dir
+            / f"forcasty_{site_id}_{frequency}_processing.json"
+        )
+
     def features_dataset_path(self, site_id: str) -> Path:
         return self.resolve(
             self.processed_dir / f"forcasty_{site_id}_features.csv"

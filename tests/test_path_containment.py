@@ -55,6 +55,31 @@ def test_hourly_and_metadata_paths_are_inside() -> None:
     assert PROJECT_ROOT in metadata.parents
 
 
+def test_processed_hourly_and_report_paths_are_inside() -> None:
+    site = load_config().get_site()
+
+    hourly_clean = PATHS.hourly_clean_dataset_path(site.site_id)
+    report = PATHS.processing_report_path(site.site_id, "hourly")
+
+    assert hourly_clean == (
+        PROJECT_ROOT
+        / "data"
+        / "processed"
+        / "forcasty_tunis_hourly_clean.csv"
+    )
+    assert report == (
+        PROJECT_ROOT
+        / "data"
+        / "metadata"
+        / "forcasty_tunis_hourly_processing.json"
+    )
+    assert PROJECT_ROOT in hourly_clean.parents
+    assert PROJECT_ROOT in report.parents
+
+    with pytest.raises(ValueError, match="frequency"):
+        PATHS.processing_report_path(site.site_id, "monthly")
+
+
 def test_relative_path_resolves_against_root() -> None:
     resolved = PATHS.resolve("data/raw/example.csv")
 

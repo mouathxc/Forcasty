@@ -2,11 +2,12 @@
 
 Hourly global horizontal irradiance (GHI) forecasting for Tunisia.
 
-**Status:** milestones M0 (repository foundation) and M1 (NASA POWER hourly
-acquisition) are complete. The repository now contains a validated hourly UTC
-dataset for Tunis from 2020-01-01 through the latest complete day, an extended
-daily dataset, provenance metadata, and an offline test suite. No forecasting
-model, feature contract, or dashboard exists yet.
+**Status:** milestones M0 (repository foundation), M1 (NASA POWER hourly
+acquisition) and M2 (validation and canonical cleaning) are complete. The
+repository contains raw hourly and daily datasets, canonical processed
+versions, JSON validation/processing reports, provenance metadata and an
+offline test suite. Feature engineering and forecasting models are not
+implemented yet.
 
 ## Scope
 
@@ -76,12 +77,12 @@ src/forcasty/
     acquisition.py         Hourly acquisition and daily tail extension
     metadata.py            SHA-256, UTC timestamps, atomic JSON writes
     inspection.py          Structural inspection
-    validation.py          Raw dataset checks (daily; M2 will generalize)
-    cleaning.py            Deterministic cleaning (daily; M2)
-    transformation.py      Calendar, lag and rolling features (daily; M2)
-data/raw/                  Raw downloads (daily and hourly)
-data/processed/            Cleaned and feature datasets
-data/metadata/             Acquisition provenance (JSON)
+    validation.py          Daily/hourly validation contracts and reports
+    cleaning.py            Canonical cleaning, processing reports, CLI
+    transformation.py      Calendar, lag and rolling features (daily; M4)
+data/raw/                  Raw downloads (daily and hourly, immutable)
+data/processed/            Canonical cleaned datasets and legacy features
+data/metadata/             Acquisition provenance and processing reports
 notebooks/                 Exploratory analysis
 tests/                     Offline pytest suite
 ```
@@ -92,7 +93,8 @@ tests/                     Offline pytest suite
 - Runtime libraries are pinned in `pyproject.toml` and
   `requirements.txt`.
 
-No new dependency was introduced for M1; the client uses `requests`.
+No new dependency was introduced for M1 or M2; the client uses `requests` and
+processing uses the existing pandas stack.
 
 ## Installation
 
@@ -178,17 +180,55 @@ parameters and units, community, time standard, timestamp convention,
 requested and actual ranges, acquisition time, counts, missing and duplicate
 counts, fill value, chunk details, file path and SHA-256.
 
-### Legacy daily pipeline
+## Validation and canonical cleaning
 
-Cleaning, validation and feature generation still operate on the daily
-dataset. They are preserved from M0 and will be adapted to the hourly target
-in M2:
+The daily and hourly datasets are validated and cleaned independently. Their
+temporal conventions and radiation units are never mixed:
+
+| Dataset | Input | Output | Time | GHI unit |
+| --- | --- | --- | --- | --- |
+| Daily | `data/raw/nasa_power_tunis.csv` | `data/processed/forcasty_tunis_clean.csv` | LST | `kW-hr/m^2/day` |
+| Hourly | `data/raw/nasa_power_tunis_hourly.csv` | `data/processed/forcasty_tunis_hourly_clean.csv` | UTC | `Wh/m^2` |
+
+Commands:
 
 ```bash
-python -m forcasty.data.validation --site tunis
-python -m forcasty.data.cleaning --site tunis
-python -m forcasty.data.transformation --site tunis
+# Validate one dataset or both
+python -m forcasty.data.validation daily --site tunis
+python -m forcasty.data.validation hourly --site tunis
+python -m forcasty.data.validation all --site tunis
+
+# Clean one dataset or both
+python -m forcasty.data.cleaning daily --site tunis
+python -m forcasty.data.cleaning hourly --site tunis
+python -m forcasty.data.cleaning all --site tunis
 ```
+
+Validation policy:
+
+- **Errors** block cleaning: empty data, missing required columns,
+  unparseable timestamps, duplicate timestamps, and non-numeric values.
+- **Warnings** do not block cleaning: unsorted timestamps (cleaning sorts
+  them), missing calendar days or hours (never filled), off-grid spacing,
+  negative GHI or wind speed, humidity outside 0–100 %, and temperature
+  outside the broad physical screen `[-90, 60] °C`.
+- NASA's `-999` marker is counted separately from genuine missing values and
+  converted to missing by cleaning.
+- Physical anomalies are reported but never repaired or dropped. There is no
+  interpolation, forward-fill, imputation or zero-fill.
+
+Cleaning only parses timestamps, converts numeric columns, replaces `-999`
+with missing, and sorts chronologically. It never mutates its input, never
+removes duplicate or invalid records silently, and is idempotent.
+
+Each cleaning run writes a processing report to
+`data/metadata/forcasty_{site}_{frequency}_processing.json` containing the site
+and dataset description, time convention and units, source/output paths and
+SHA-256 hashes, row counts, timestamp range, duplicate/invalid/missing-interval
+counts, missing and fill-value counts by column, operations performed,
+validation warnings and errors, processing timestamp, and software version.
+Reports are reproducible apart from the timestamp. Raw files are read-only
+inputs and are never modified by validation or cleaning.
 
 ## Tests
 
@@ -197,12 +237,11 @@ python -m pytest
 ```
 
 The suite runs entirely offline. It covers project-root discovery,
-configuration and invalid sites, path containment, dataset preservation, and
-mocked acquisition: request construction, explicit UTC/LST handling, response
-parsing, yearly chunk boundaries, retry and backoff behavior, invalid JSON and
-API errors, sentinel handling, metadata and file hashing, daily prefix
-preservation, and repository-contained outputs. NASA POWER is never contacted
-by a test.
+configuration and invalid sites, path containment, dataset preservation,
+mocked acquisition, and M2 validation/cleaning: structural and temporal
+contracts, `-999` handling, physical warnings, invalid numerics, input
+immutability, idempotent cleaning, SHA-256 and processing-report correctness,
+and raw-file preservation. NASA POWER is never contacted by a test.
 
 ## Roadmap
 
@@ -210,7 +249,7 @@ by a test.
 | --- | --- | --- |
 | M0 | Repository foundation, config, paths, packaging, tests | Complete |
 | M1 | Hourly acquisition, chunking, provenance, timezone handling | Complete |
-| M2 | Failing validation contracts and deterministic cleaning | Not started |
+| M2 | Failing validation contracts and deterministic cleaning | Complete |
 | M3+ | Solar geometry, EDA, features, models, evaluation, dashboard | Not started |
 
 ## Limitations
@@ -220,9 +259,10 @@ by a test.
 - Daily data are LST-based while hourly data are UTC; they must not be mixed
   without an explicit, documented conversion.
 - Daily and hourly radiation units differ and are not interchangeable.
-- Validation, cleaning and feature code still target the daily dataset; that
-  is M2 work.
-- The daily tail may include NASA fill values that reduce usable days.
+- Physical plausibility checks are warnings, not corrections; anomalous values
+  remain in the processed files and are recorded in the processing reports.
+- `transformation.py` and the committed feature dataset still target the
+  earlier daily extract (2,192 rows); feature engineering is deferred to M4.
 - There are no trained models and no dashboard.
 
 ## Author

@@ -1,0 +1,90 @@
+{
+  "cleaning_operations": [
+    {
+      "column": "timestamp",
+      "invalid_records_removed": 0,
+      "operation": "parse_timestamps",
+      "time_standard": "UTC"
+    },
+    {
+      "columns": [
+        "ALLSKY_SFC_SW_DWN",
+        "T2M",
+        "RH2M",
+        "WS2M"
+      ],
+      "invalid_values_replaced": 0,
+      "operation": "convert_numeric"
+    },
+    {
+      "counts": {
+        "ALLSKY_SFC_SW_DWN": 0,
+        "RH2M": 0,
+        "T2M": 0,
+        "WS2M": 0
+      },
+      "marker": -999.0,
+      "operation": "replace_fill_values"
+    },
+    {
+      "changed": false,
+      "operation": "sort_chronologically"
+    },
+    {
+      "interpolation": false,
+      "operation": "preserve_missing_values",
+      "rows_dropped": 0
+    }
+  ],
+  "duplicate_timestamp_count": 0,
+  "fill_value_counts_by_column": {
+    "ALLSKY_SFC_SW_DWN": 0,
+    "RH2M": 0,
+    "T2M": 0,
+    "WS2M": 0
+  },
+  "frequency": "hourly",
+  "ghi_units": "Wh/m^2",
+  "input_row_count": 60216,
+  "invalid_numeric_counts": {
+    "ALLSKY_SFC_SW_DWN": 0,
+    "RH2M": 0,
+    "T2M": 0,
+    "WS2M": 0
+  },
+  "invalid_observation_counts": {},
+  "invalid_timestamp_count": 0,
+  "irregular_spacing_count": 0,
+  "missing_interval_count": 0,
+  "missing_values_by_column": {
+    "ALLSKY_SFC_SW_DWN": 1776,
+    "RH2M": 48,
+    "T2M": 48,
+    "WS2M": 48
+  },
+  "output_file": "data/processed/forcasty_tunis_hourly_clean.csv",
+  "output_row_count": 60216,
+  "output_sha256": "0c0fea8e13ab2afa6375e5015e3fbf0eff8fda3dcdabc76327f9214a7305b9c7",
+  "processing_timestamp_utc": "2026-11-14T00:56:50Z",
+  "site_id": "tunis",
+  "site_name": "Tunis",
+  "software_version": "0.1.0",
+  "source_file": "data/raw/nasa_power_tunis_hourly.csv",
+  "source_sha256": "0c0fea8e13ab2afa6375e5015e3fbf0eff8fda3dcdabc76327f9214a7305b9c7",
+  "time_standard": "UTC",
+  "timestamp_convention": "UTC",
+  "timestamp_range": {
+    "first": "2020-01-01T00:00:00Z",
+    "last": "2026-11-13T23:00:00Z"
+  },
+  "unsorted_timestamps": false,
+  "validation_errors": [],
+  "validation_warnings": [
+    {
+      "code": "MISSING_VALUES",
+      "count": 1920,
+      "message": "missing values retained without filling: {'ALLSKY_SFC_SW_DWN': 1776, 'T2M': 48, 'RH2M': 48, 'WS2M': 48}",
+      "severity": "warning"
+    }
+  ]
+}
