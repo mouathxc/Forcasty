@@ -6,8 +6,10 @@ Hourly global horizontal irradiance (GHI) forecasting for Tunisia.
 acquisition) and M2 (validation and canonical cleaning) are complete. The
 repository contains raw hourly and daily datasets, canonical processed
 versions, JSON validation/processing reports, provenance metadata and an
-offline test suite. Feature engineering and forecasting models are not
-implemented yet.
+offline test suite. M3 (exploratory data analysis) is in progress: Phase 0
+(package and output-path scaffolding) is complete, while the analysis code,
+figures and report are not implemented yet. Feature engineering and
+forecasting models are not implemented yet.
 
 ## Scope
 
@@ -80,9 +82,11 @@ src/forcasty/
     validation.py          Daily/hourly validation contracts and reports
     cleaning.py            Canonical cleaning, processing reports, CLI
     transformation.py      Calendar, lag and rolling features (daily; M4)
+  analysis/                EDA package scaffolding and output paths (M3)
 data/raw/                  Raw downloads (daily and hourly, immutable)
 data/processed/            Canonical cleaned datasets and legacy features
 data/metadata/             Acquisition provenance and processing reports
+reports/eda/               Generated EDA summaries, figures and reports (M3)
 notebooks/                 Exploratory analysis
 tests/                     Offline pytest suite
 ```
@@ -113,6 +117,17 @@ If you only need the runtime dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
+Exploratory analysis (M3) additionally uses the optional plotting stack:
+
+```bash
+pip install -e ".[dev,eda]"
+```
+
+EDA artefacts will be written under `reports/eda/{site_id}/`, with
+machine-readable summaries in `summaries/`, PNG figures in `figures/`, a
+written `eda_report.md` and a `manifest.json`. Phase 0 only adds the package
+and path scaffolding; no analysis, figures or reports are generated yet.
 
 ## Configuration
 
@@ -250,7 +265,8 @@ and raw-file preservation. NASA POWER is never contacted by a test.
 | M0 | Repository foundation, config, paths, packaging, tests | Complete |
 | M1 | Hourly acquisition, chunking, provenance, timezone handling | Complete |
 | M2 | Failing validation contracts and deterministic cleaning | Complete |
-| M3+ | Solar geometry, EDA, features, models, evaluation, dashboard | Not started |
+| M3 | Exploratory data analysis (Phase 0 scaffolding complete) | In progress |
+| M4+ | Solar geometry, features, models, evaluation, dashboard | Not started |
 
 ## Limitations
 

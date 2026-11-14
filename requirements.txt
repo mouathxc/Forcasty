@@ -3,6 +3,10 @@
 #
 # Development dependencies (pytest) are installed with:
 #   pip install -e ".[dev]"
+#
+# Optional exploratory-analysis (M3) dependencies, matplotlib and seaborn,
+# are declared as the "eda" extra in pyproject.toml:
+#   pip install -e ".[dev,eda]"
 numpy==2.5.2
 pandas==3.0.5
 PyYAML==6.0.3

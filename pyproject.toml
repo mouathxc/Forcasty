@@ -32,6 +32,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest==9.2.0"]
+eda = ["matplotlib==3.11.1", "seaborn==0.13.2"]
 
 [project.urls]
 Repository = "https://github.com/mouathxc/Forcasty"
