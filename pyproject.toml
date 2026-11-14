@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forcasty"
+version = "0.1.0"
+description = "Hourly global horizontal irradiance (GHI) forecasting for Tunisia"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Forcasty contributors" }]
+keywords = ["solar", "irradiance", "forecasting", "tunisia", "time-series"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
+
+# Only what the current M0 code imports. Optional stacks (plotting, ML,
+# dashboard) are added in the milestones that actually use them.
+dependencies = [
+    "numpy==2.5.2",
+    "pandas==3.0.5",
+    "PyYAML==6.0.3",
+    "requests==2.34.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0"]
+
+[project.urls]
+Repository = "https://github.com/mouathxc/Forcasty"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --strict-markers"

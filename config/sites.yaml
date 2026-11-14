@@ -1,0 +1,15 @@
+# Forcasty site registry.
+#
+# Site ids must match ^[a-z0-9][a-z0-9_-]{0,63}$ because they are used in
+# dataset filenames.  Coordinates are decimal degrees (WGS 84).
+#
+# The initial release targets Tunis only; additional Tunisian cities will be
+# added as new entries under `sites`.
+
+default_site: tunis
+
+sites:
+  tunis:
+    name: Tunis
+    latitude: 36.8065
+    longitude: 10.1815

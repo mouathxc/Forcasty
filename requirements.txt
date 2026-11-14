@@ -1,2 +1,9 @@
-pandas
-requests
+# Runtime dependencies for Forcasty.
+# Mirrors [project.dependencies] in pyproject.toml.
+#
+# Development dependencies (pytest) are installed with:
+#   pip install -e ".[dev]"
+numpy==2.5.2
+pandas==3.0.5
+PyYAML==6.0.3
+requests==2.34.2
