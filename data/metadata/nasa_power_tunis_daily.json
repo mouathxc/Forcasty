@@ -1,0 +1,85 @@
+{
+  "acquisition_utc": "2026-11-14T00:27:20Z",
+  "actual_first_timestamp": "2026-01-01",
+  "actual_last_timestamp": "2026-11-13",
+  "api_name": "POWER Daily API",
+  "api_version": "v2.10.3",
+  "append_only": true,
+  "appended_rows": 317,
+  "chunks": [
+    {
+      "requested_end": "20261113",
+      "requested_start": "20260101",
+      "returned_rows": 317
+    }
+  ],
+  "combined_missing_day_count": 0,
+  "combined_rows": 2509,
+  "community": "RE",
+  "dataset": "daily",
+  "duplicate_timestamp_count": 0,
+  "endpoint": "https://power.larc.nasa.gov/api/temporal/daily/point",
+  "file": "data/raw/nasa_power_tunis.csv",
+  "file_sha256": "e7c0deb6253aedd2b25a7b37af399a0d97d9398d057d7b04e0473551a7786619",
+  "fill_value": -999.0,
+  "historical_last_date": "2025-12-31",
+  "historical_rows": 2192,
+  "missing_record_count": 0,
+  "missing_value_counts": {
+    "ALLSKY_SFC_SW_DWN": 10,
+    "RH2M": 3,
+    "T2M": 3,
+    "WS2M": 3
+  },
+  "missing_value_total": 19,
+  "parameter_longnames": {
+    "ALLSKY_SFC_SW_DWN": "All Sky Surface Shortwave Downward Irradiance",
+    "RH2M": "Relative Humidity at 2 Meters",
+    "T2M": "Temperature at 2 Meters",
+    "WS2M": "Wind Speed at 2 Meters"
+  },
+  "parameter_units": {
+    "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+    "RH2M": "%",
+    "T2M": "C",
+    "WS2M": "m/s"
+  },
+  "parameters": [
+    "ALLSKY_SFC_SW_DWN",
+    "T2M",
+    "RH2M",
+    "WS2M"
+  ],
+  "product_description": "NASA POWER gridded data derived from reanalysis (MERRA-2) and satellite products (CERES SYN1deg). These are not ground-station measurements.",
+  "record_count": 317,
+  "requested_coordinates": {
+    "latitude": 36.8065,
+    "longitude": 10.1815
+  },
+  "requested_end": "2026-11-13",
+  "requested_start": "2026-01-01",
+  "returned_grid_coordinates": {
+    "elevation": 54.49,
+    "latitude": 36.806,
+    "longitude": 10.181
+  },
+  "site": {
+    "latitude": 36.8065,
+    "longitude": 10.1815,
+    "name": "Tunis",
+    "site_id": "tunis"
+  },
+  "source": "NASA POWER",
+  "sources": [
+    "MERRA2",
+    "GEOSIT",
+    "SYN1DEG",
+    "FLASHFLUX",
+    "POWER"
+  ],
+  "status": "success",
+  "time_standard": "LST",
+  "time_standard_note": "The existing daily history was acquired in NASA POWER Local Solar Time (LST). The tail uses LST as well to keep day boundaries consistent; hourly data use UTC.",
+  "timestamp_convention": "calendar day",
+  "timestamp_format": "YYYY-MM-DD"
+}

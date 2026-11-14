@@ -39,6 +39,22 @@ def test_clean_and_feature_paths_are_inside() -> None:
     assert PROJECT_ROOT in features.parents
 
 
+def test_hourly_and_metadata_paths_are_inside() -> None:
+    site = load_config().get_site()
+
+    hourly = PATHS.hourly_dataset_path(site.site_id)
+    metadata = PATHS.metadata_path("nasa_power_tunis_hourly")
+
+    assert hourly == (
+        PROJECT_ROOT / "data" / "raw" / "nasa_power_tunis_hourly.csv"
+    )
+    assert metadata == (
+        PROJECT_ROOT / "data" / "metadata" / "nasa_power_tunis_hourly.json"
+    )
+    assert PROJECT_ROOT in hourly.parents
+    assert PROJECT_ROOT in metadata.parents
+
+
 def test_relative_path_resolves_against_root() -> None:
     resolved = PATHS.resolve("data/raw/example.csv")
 

@@ -14,7 +14,8 @@ import pytest
 from forcasty.paths import PATHS, PROJECT_ROOT
 
 EXPECTED_MD5 = {
-    "data/raw/nasa_power_tunis.csv": "ff6c7fc1f87ea909f424f3068af5c15b",
+    "data/raw/nasa_power_tunis.csv": "b6766b6ec4bfba964f497fb389b6db7a",
+    "data/raw/nasa_power_tunis_hourly.csv": "b6e966f1d2e501af7e0bedf05fcc2aa8",
     "data/processed/forcasty_tunis_clean.csv": "ff6c7fc1f87ea909f424f3068af5c15b",
     "data/processed/forcasty_tunis_features.csv": "9b0465579c87e63c739103f603805756",
 }
@@ -33,7 +34,7 @@ def test_raw_dataset_structure_and_range() -> None:
     path = PATHS.raw_dataset_path("tunis")
     df = pd.read_csv(path, parse_dates=["date"])
 
-    assert df.shape == (2192, 5)
+    assert df.shape == (2509, 5)
     assert list(df.columns) == [
         "date",
         "ALLSKY_SFC_SW_DWN",
@@ -42,9 +43,36 @@ def test_raw_dataset_structure_and_range() -> None:
         "WS2M",
     ]
     assert df["date"].min() == pd.Timestamp("2020-01-01")
-    assert df["date"].max() == pd.Timestamp("2025-12-31")
-    assert int(df.isna().sum().sum()) == 0
+    assert df["date"].max() == pd.Timestamp("2026-11-13")
+    # The historical days had no missing values; the tail contains NASA
+    # POWER fill values that must remain missing, never zero-filled.
+    assert int(df.isna().sum().sum()) == 19
     assert not df["date"].duplicated().any()
+    assert len(pd.date_range(df["date"].min(), df["date"].max(), freq="D")) == len(df)
+
+
+def test_hourly_dataset_structure_and_coverage() -> None:
+    path = PATHS.hourly_dataset_path("tunis")
+    df = pd.read_csv(path)
+    stamps = pd.to_datetime(df["timestamp"], format="%Y-%m-%dT%H:%M:%SZ", utc=True)
+
+    assert df.shape == (60216, 5)
+    assert list(df.columns) == [
+        "timestamp",
+        "ALLSKY_SFC_SW_DWN",
+        "T2M",
+        "RH2M",
+        "WS2M",
+    ]
+    assert stamps.min() == pd.Timestamp("2020-01-01T00:00:00Z")
+    assert stamps.max() == pd.Timestamp("2026-11-13T23:00:00Z")
+    assert stamps.is_monotonic_increasing
+    assert not stamps.duplicated().any()
+    assert len(pd.date_range(stamps.min(), stamps.max(), freq="h")) == len(df)
+    assert (df["ALLSKY_SFC_SW_DWN"].dropna() >= 0).all()
+    assert int(df["ALLSKY_SFC_SW_DWN"].isna().sum()) == 1776
+    for column in df.columns[1:]:
+        assert pd.api.types.is_float_dtype(df[column])
 
 
 def test_feature_dataset_structure_and_causality_columns() -> None:

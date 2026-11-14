@@ -1,0 +1,108 @@
+{
+  "acquisition_utc": "2026-11-14T00:27:14Z",
+  "actual_first_timestamp": "2020-01-01T00:00:00Z",
+  "actual_last_timestamp": "2026-11-13T23:00:00Z",
+  "api_name": "POWER Hourly API",
+  "api_version": "v2.10.4",
+  "chunks": [
+    {
+      "requested_end": "20201231",
+      "requested_start": "20200101",
+      "returned_rows": 8784
+    },
+    {
+      "requested_end": "20211231",
+      "requested_start": "20210101",
+      "returned_rows": 8760
+    },
+    {
+      "requested_end": "20221231",
+      "requested_start": "20220101",
+      "returned_rows": 8760
+    },
+    {
+      "requested_end": "20231231",
+      "requested_start": "20230101",
+      "returned_rows": 8760
+    },
+    {
+      "requested_end": "20241231",
+      "requested_start": "20240101",
+      "returned_rows": 8784
+    },
+    {
+      "requested_end": "20251231",
+      "requested_start": "20250101",
+      "returned_rows": 8760
+    },
+    {
+      "requested_end": "20261113",
+      "requested_start": "20260101",
+      "returned_rows": 7608
+    }
+  ],
+  "community": "RE",
+  "dataset": "hourly",
+  "duplicate_timestamp_count": 0,
+  "endpoint": "https://power.larc.nasa.gov/api/temporal/hourly/point",
+  "expected_record_count": 60216,
+  "file": "data/raw/nasa_power_tunis_hourly.csv",
+  "file_sha256": "0c0fea8e13ab2afa6375e5015e3fbf0eff8fda3dcdabc76327f9214a7305b9c7",
+  "fill_value": -999.0,
+  "missing_record_count": 0,
+  "missing_value_counts": {
+    "ALLSKY_SFC_SW_DWN": 1776,
+    "RH2M": 48,
+    "T2M": 48,
+    "WS2M": 48
+  },
+  "missing_value_total": 1920,
+  "parameter_longnames": {
+    "ALLSKY_SFC_SW_DWN": "All Sky Surface Shortwave Downward Irradiance",
+    "RH2M": "Relative Humidity at 2 Meters",
+    "T2M": "Temperature at 2 Meters",
+    "WS2M": "Wind Speed at 2 Meters"
+  },
+  "parameter_units": {
+    "ALLSKY_SFC_SW_DWN": "Wh/m^2",
+    "RH2M": "%",
+    "T2M": "C",
+    "WS2M": "m/s"
+  },
+  "parameters": [
+    "ALLSKY_SFC_SW_DWN",
+    "T2M",
+    "RH2M",
+    "WS2M"
+  ],
+  "product_description": "NASA POWER gridded data derived from reanalysis (MERRA-2) and satellite products (CERES SYN1deg). These are not ground-station measurements.",
+  "rebuild": false,
+  "record_count": 60216,
+  "requested_coordinates": {
+    "latitude": 36.8065,
+    "longitude": 10.1815
+  },
+  "requested_end": "2026-11-13",
+  "requested_start": "2020-01-01",
+  "returned_grid_coordinates": {
+    "elevation": 54.49,
+    "latitude": 36.806,
+    "longitude": 10.181
+  },
+  "site": {
+    "latitude": 36.8065,
+    "longitude": 10.1815,
+    "name": "Tunis",
+    "site_id": "tunis"
+  },
+  "source": "NASA POWER",
+  "sources": [
+    "MERRA2",
+    "SYN1DEG",
+    "POWER"
+  ],
+  "status": "success",
+  "time_standard": "UTC",
+  "timestamp_convention": "start of hour",
+  "timestamp_format": "YYYY-MM-DDTHH:MM:SSZ"
+}

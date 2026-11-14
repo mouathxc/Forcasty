@@ -2,4 +2,12 @@
 
 from __future__ import annotations
 
-__all__ = ["acquisition", "cleaning", "inspection", "transformation", "validation"]
+__all__ = [
+    "acquisition",
+    "cleaning",
+    "client",
+    "inspection",
+    "metadata",
+    "transformation",
+    "validation",
+]

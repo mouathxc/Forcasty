@@ -119,6 +119,14 @@ class ProjectPaths:
     def raw_dataset_path(self, site_id: str, source: str = "nasa_power") -> Path:
         return self.resolve(self.raw_dir / f"{source}_{site_id}.csv")
 
+    def hourly_dataset_path(
+        self, site_id: str, source: str = "nasa_power"
+    ) -> Path:
+        return self.resolve(self.raw_dir / f"{source}_{site_id}_hourly.csv")
+
+    def metadata_path(self, stem: str) -> Path:
+        return self.resolve(self.metadata_dir / f"{stem}.json")
+
     def clean_dataset_path(self, site_id: str) -> Path:
         return self.resolve(
             self.processed_dir / f"forcasty_{site_id}_clean.csv"
